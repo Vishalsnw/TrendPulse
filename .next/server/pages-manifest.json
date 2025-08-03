@@ -4,9 +4,9 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/api/google": "pages/api/google.js",
-  "/api/youtube": "pages/api/youtube.js",
   "/api/twitter": "pages/api/twitter.js",
-  "/api/wikipedia": "pages/api/wikipedia.js",
   "/api/reddit": "pages/api/reddit.js",
+  "/api/wikipedia": "pages/api/wikipedia.js",
+  "/api/youtube": "pages/api/youtube.js",
   "/api/spotify": "pages/api/spotify.js"
 }
