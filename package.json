@@ -19,7 +19,7 @@
     "cheerio": "^1.0.0-rc.12",
     "axios": "^1.6.0",
     "google-trends-api": "^4.9.2",
-    "youtube-trending-scraper": "^1.0.3",
+    
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18"
   },
