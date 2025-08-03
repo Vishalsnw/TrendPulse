@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ExternalLinkIcon, EyeIcon, HeartIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, EyeIcon, HeartIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 
 export default function TrendCard({ trend, platform, index }) {
   const renderTrendContent = () => {
@@ -197,7 +197,7 @@ export default function TrendCard({ trend, platform, index }) {
           className="inline-flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
         >
           <span>View on {platform.name}</span>
-          <ExternalLinkIcon className="h-4 w-4" />
+          <ArrowTopRightOnSquareIcon className="h-4 w-4" />
         </a>
       </div>
     </div>

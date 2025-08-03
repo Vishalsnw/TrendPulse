@@ -1,5 +1,5 @@
 
-import { getYouTubeTrending } from '../../lib/scrapers';
+import { getYoutubeTrending } from '../../lib/scrapers';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const trends = await getYouTubeTrending();
+    const trends = await getYoutubeTrending();
     res.status(200).json(trends);
   } catch (error) {
     console.error('YouTube Trending API error:', error);

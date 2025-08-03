@@ -1,5 +1,5 @@
 
-import { getGoogleTrends } from '../../lib/scrapers';
+import { getGoogleTrending } from '../../lib/scrapers';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const trends = await getGoogleTrends();
+    const trends = await getGoogleTrending();
     res.status(200).json(trends);
   } catch (error) {
     console.error('Google Trends API error:', error);
