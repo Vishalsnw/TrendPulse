@@ -1,12 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import TrendCard from '../components/TrendCard';
-import { 
-  MagnifyingGlassIcon, 
-  ArrowPathIcon,
-  FunnelIcon 
-} from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 
 const platforms = [
   { id: 'google', name: 'Google', icon: '🔍', color: 'bg-blue-500' },
@@ -49,36 +44,22 @@ export default function Home() {
 
   useEffect(() => {
     const currentData = trendsData[activePlatform] || [];
-    if (searchQuery.trim() === '') {
-      setFilteredData(currentData);
-    } else {
+    if (searchQuery) {
       const filtered = currentData.filter(item => {
-        const searchText = searchQuery.toLowerCase();
-        
-        // Search in different fields based on platform
-        switch (activePlatform) {
-          case 'google':
-            return item.title?.toLowerCase().includes(searchText);
-          case 'youtube':
-            return item.title?.toLowerCase().includes(searchText) || 
-                   item.channel?.toLowerCase().includes(searchText);
-          case 'twitter':
-            return item.hashtag?.toLowerCase().includes(searchText);
-          case 'wikipedia':
-            return item.title?.toLowerCase().includes(searchText);
-          case 'reddit':
-            return item.title?.toLowerCase().includes(searchText) || 
-                   item.subreddit?.toLowerCase().includes(searchText);
-          case 'spotify':
-            return item.song?.toLowerCase().includes(searchText) || 
-                   item.artist?.toLowerCase().includes(searchText);
-          case 'netflix':
-            return item.title?.toLowerCase().includes(searchText);
-          default:
-            return false;
-        }
+        const searchFields = [
+          item.title,
+          item.hashtag,
+          item.song,
+          item.artist,
+          item.channel,
+          item.subreddit
+        ].filter(Boolean).join(' ').toLowerCase();
+
+        return searchFields.includes(searchQuery.toLowerCase());
       });
       setFilteredData(filtered);
+    } else {
+      setFilteredData(currentData);
     }
   }, [searchQuery, trendsData, activePlatform]);
 
@@ -86,94 +67,93 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="space-y-6">
-        {/* Header Section */}
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            What's Trending Right Now
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Discover the latest trends across multiple platforms in India. 
-            Real-time data from Google, YouTube, Twitter, Reddit, Wikipedia, Spotify, and Netflix.
-          </p>
-        </div>
-
-        {/* Search Bar */}
-        <div className="max-w-md mx-auto">
-          <div className="relative">
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder={`Search ${currentPlatform?.name} trends...`}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-
-        {/* Platform Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {platforms.map((platform) => (
-            <button
-              key={platform.id}
-              onClick={() => setActivePlatform(platform.id)}
-              className={`platform-tab ${
-                activePlatform === platform.id ? 'active' : 'inactive'
-              }`}
-            >
-              <span className="text-lg">{platform.icon}</span>
-              <span className="hidden sm:inline">{platform.name}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Refresh Button */}
-        <div className="flex justify-center">
-          <button
-            onClick={refreshTrends}
-            disabled={loading[activePlatform]}
-            className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white rounded-lg transition-colors"
-          >
-            <ArrowPathIcon 
-              className={`w-5 h-5 ${loading[activePlatform] ? 'animate-spin' : ''}`} 
-            />
-            Refresh
-          </button>
-        </div>
-
-        {/* Search Results Count */}
-        {searchQuery && (
-          <div className="text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Found {filteredData.length} results for "{searchQuery}"
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+        <div className="container mx-auto px-4 py-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+              TrendPulse
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">
+              Discover what's trending across the internet
             </p>
           </div>
-        )}
 
-        {/* Trends Content */}
-        <div className="max-w-4xl mx-auto">
-          {loading[activePlatform] ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+          {/* Search Bar */}
+          <div className="max-w-md mx-auto mb-8">
+            <div className="relative">
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search trends..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              />
             </div>
-          ) : (
-            <TrendCard
-              data={filteredData}
-              platform={activePlatform}
-              icon={currentPlatform?.icon}
-            />
-          )}
-        </div>
+          </div>
 
-        {/* Footer */}
-        <div className="text-center py-8 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Data refreshed every time you visit. All platforms scraped using free, public methods.
-          </p>
-          <p className="text-xs text-gray-400 mt-2">
-            Built with Next.js • Deployed on Replit
-          </p>
+          {/* Platform Tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {platforms.map((platform) => (
+              <button
+                key={platform.id}
+                onClick={() => setActivePlatform(platform.id)}
+                className={`platform-tab ${
+                  activePlatform === platform.id ? 'active' : 'inactive'
+                }`}
+              >
+                <span className="text-lg">{platform.icon}</span>
+                <span className="hidden sm:inline">{platform.name}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Refresh Button */}
+          <div className="flex justify-center mb-8">
+            <button
+              onClick={refreshTrends}
+              disabled={loading[activePlatform]}
+              className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 dark:border-gray-600 disabled:opacity-50"
+            >
+              <ArrowPathIcon 
+                className={`h-5 w-5 ${loading[activePlatform] ? 'animate-spin' : ''}`} 
+              />
+              <span>Refresh {currentPlatform?.name} Trends</span>
+            </button>
+          </div>
+
+          {/* Trends Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {loading[activePlatform] ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="trend-card p-6 animate-pulse">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+                </div>
+              ))
+            ) : filteredData.length > 0 ? (
+              filteredData.map((trend, index) => (
+                <TrendCard
+                  key={index}
+                  trend={trend}
+                  platform={currentPlatform}
+                  index={index}
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  No trends found
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {searchQuery ? 'Try a different search term' : 'Unable to fetch trends at the moment'}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Layout>
